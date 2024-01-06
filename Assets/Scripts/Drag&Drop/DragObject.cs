@@ -6,8 +6,16 @@ using UnityEngine.EventSystems;
 
 public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    public bool NeedToRespawn
+    {
+        get {return _needToRespawn;}
+        set {_needToRespawn = value;}
+    }
+
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
+    private bool _needToRespawn = true;
+    [SerializeField] private Transform _defaultPosition;
 
     private void Awake() 
     {
@@ -35,6 +43,11 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
+        Debug.Log("End");
+        if(_needToRespawn)
+        {
+            Respawn();
+        }
         _collider.enabled = true;
         _rigidbody.gravityScale = 1;
     }
@@ -48,6 +61,12 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     public void OnPointerUp(PointerEventData data)
     {
         // Debug.Log("Release!");
+    }
+
+    public void Respawn()
+    {
+        transform.position = _defaultPosition.position;
+        _needToRespawn = true;
     }
 
 }

@@ -51,6 +51,7 @@ public class Room : DropArea
             if(eventData.pointerDrag.TryGetComponent<Guest>(out _guest))
             {
                 // Debug.Log("Get Tasks");
+                (_guest as DragObject).NeedToRespawn = false;
                 GetNextTask();
             }else
             {
@@ -58,9 +59,10 @@ public class Room : DropArea
             }
         }else
         {
-            if(eventData.pointerDrag.TryGetComponent<Employee>(out _employee))
+            if(eventData.pointerDrag.TryGetComponent<Employee>(out _employee) && _currentTaskCooldown == -10)
             {
                 // Debug.Log("Start Work");
+                (_employee as DragObject).NeedToRespawn = false;
                 StartCoroutine(FinishTaskCo());
             }else
             {
@@ -89,6 +91,7 @@ public class Room : DropArea
             Destroy(child.gameObject);
         }
 
+        (_employee as DragObject).Respawn();
         _employee = null;
         GetNextTask();
     }
