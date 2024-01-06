@@ -23,9 +23,9 @@ public class TaskSheet
         return returningTask;
     }
 
-    public NumberOfTasks[] GetInfoForBubble()
+    public TaskInfo[ ]GetInfoForBubble()
     {
-        List<NumberOfTasks> info = new List<NumberOfTasks>();
+        List<TaskInfo> info = new List<TaskInfo>();
         for (int i = 0; i < _tasks.Count; i++)
         {
             bool isNew = true;
@@ -41,20 +41,20 @@ public class TaskSheet
 
             if (isNew)
             {
-                info.Add(new NumberOfTasks(_tasks[i].Id, _tasks[i].Sprite));
+                info.Add(new TaskInfo(_tasks[i].Id, _tasks[i].Sprite));
             }
         }
 
         return info.ToArray();
     }
 
-    public class NumberOfTasks
+    public class TaskInfo
     {
         public int id { get; private set; }
-        public int count;
+        public byte count;
         public Sprite sprite;
 
-        public NumberOfTasks(int id, Sprite sprite)
+        public TaskInfo(int id, Sprite sprite)
         {
             this.id = id;
             this.sprite = sprite;
