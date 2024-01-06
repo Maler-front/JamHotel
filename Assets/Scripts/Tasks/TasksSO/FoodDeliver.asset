@@ -15,4 +15,4 @@ MonoBehaviour:
   _id: 1
   _duration: 5
   _reward: 100
-  _sprite: {fileID: 0}
+  _sprite: {fileID: 21300000, guid: fc5df59bc645e1f4d927bcfd9ce7bacc, type: 3}
