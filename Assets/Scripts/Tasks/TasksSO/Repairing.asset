@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b529748c44218d4182ffe0c94ce07d9, type: 3}
-  m_Name: FoodDeliver
+  m_Name: Repairing
   m_EditorClassIdentifier: 
-  _id: 1
-  _duration: 5
-  _reward: 100
-  _sprite: {fileID: 0}
+  _id: 2
+  _duration: 10
+  _reward: -200
+  _sprite: {fileID: 21300000, guid: 5a3710825c6df3b438ca68790f9d7561, type: 3}
