@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Guest : DragObject
 {
@@ -18,7 +19,12 @@ public class Guest : DragObject
    [SerializeField] private TaskUI _taskPrefab;
    [SerializeField] private GameObject _holder;
 
-   private void Start() 
+    [Header("Body parts")]
+    [Space]
+    [SerializeField] private Image _headImage;
+    [SerializeField] private Image _bodyImage;
+
+    private void Start() 
    {
       _taskSheet = new TaskSheet(_tasksCount);  
    }
@@ -39,6 +45,12 @@ public class Guest : DragObject
          Destroy(child.gameObject);
       }
    }
+
+    public void SetBodyParts(Sprite _headSprite, Sprite _bodySprite)
+    {
+        _headImage.sprite = _headSprite;
+        _bodyImage.sprite = _bodySprite;
+    }
 
    private void OnCollisionEnter2D(Collision2D other) 
    {

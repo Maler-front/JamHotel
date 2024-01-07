@@ -46,7 +46,7 @@ public class PeopleConstructor : MonoBehaviour
     {
         Sprite[] headSprites = new Sprite[1];
         Sprite[] bodySprites = new Sprite[1];
-        switch (Random.Range(0, 1))
+        switch (Random.Range(0, 2))
         {
             case 0:
                 {

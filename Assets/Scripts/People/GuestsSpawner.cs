@@ -6,6 +6,7 @@ public class GuestsSpawner : MonoBehaviour
 {
     [SerializeField] private float _tickRate;
     [SerializeField] private float _tickCapasity;
+    [SerializeField] private GameObject _guestPrefab;
     private float _remainingTicks;
 
     private void Awake()
@@ -31,8 +32,9 @@ public class GuestsSpawner : MonoBehaviour
 
     private void Spawn()
     {
-        Dictionary<PeopleConstructor.BodyPart, Sprite> sprites = new Dictionary<PeopleConstructor.BodyPart, Sprite>();
-        sprites = PeopleConstructor.Instance.GetRandomGuestSprites();
-        Debug.Log($"I alive!!!!!!!!!\n{sprites[0]}");
+        Dictionary<PeopleConstructor.BodyPart, Sprite> sprites = PeopleConstructor.Instance.GetRandomGuestSprites();
+        Instantiate(_guestPrefab)
+            .GetComponent<Guest>()
+            .SetBodyParts(sprites[PeopleConstructor.BodyPart.Head], sprites[PeopleConstructor.BodyPart.Body]);
     }
 }
