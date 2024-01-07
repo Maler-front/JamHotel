@@ -10,11 +10,17 @@ public class DragObject : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
         set {_needToRespawn = value;}
     }
 
+    public Transform DefaultPosition
+    {
+        get {return _defaultPosition;}
+        set {_defaultPosition = value;}
+    }
+
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
     private bool _needToRespawn = true;
-    protected bool _canBeDragged = true;
-    [SerializeField] protected Vector2 _defaultPosition;
+    [SerializeField] protected bool _canBeDragged = true;
+    [SerializeField] protected Transform _defaultPosition;
 
     private void Awake() 
     {
@@ -63,7 +69,8 @@ public class DragObject : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 
     public void Respawn()
     {
-        transform.position = _defaultPosition;
+        Debug.Log(_defaultPosition);
+        transform.position = _defaultPosition.position;
         _needToRespawn = true;
     }
 

@@ -55,11 +55,12 @@ public class Guest : DragObject
         _bodyImage.sprite = _bodySprite;
     }
 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Reception>(out Reception reception)) 
         {
-            _defaultPosition = collision.gameObject.transform.position;
+            //_defaultPosition = collision.gameObject.transform.position;
             ActivateSpeech();
         }
     }

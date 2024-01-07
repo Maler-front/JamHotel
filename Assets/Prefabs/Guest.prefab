@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -263,7 +263,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a72b245b915e847a141072384f806a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultPosition: {x: 0, y: 0}
+  _canBeDragged: 1
+  _defaultPosition: {fileID: 0}
+  _occupationTime: 30
   _tasksCount: 3
   _taskPrefab: {fileID: 7687859138193998490, guid: c451500603cc64a45a2feff628104f35, type: 3}
   _holder: {fileID: 7387582072569148975}
@@ -295,7 +297,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!95 &4138702172011416798
 Animator:
   serializedVersion: 5
@@ -329,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee10a37d3373d5a4da86ddfdcb72c4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.01
+  _speed: 0.2
   _minDistance: 0.5
 --- !u!1 &7387582072569148975
 GameObject:
@@ -490,7 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

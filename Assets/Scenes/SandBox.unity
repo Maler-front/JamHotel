@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8916bd36e478d5e4795a40b0d4fd94d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tickRate: 1
+  _tickRate: 0.5
   _tickCapasity: 10
   _tickSpread: 7
   _guestPrefab: {fileID: 6968046483030617526, guid: 2c5d5d934d4b068449740145e1992025, type: 3}
@@ -683,11 +683,12 @@ MonoBehaviour:
   _cost: 100
   _employee: {fileID: 0}
   _guest: {fileID: 0}
+  _incomeCooldown: 0
   _task: {fileID: 0}
-  _taskCooldown: 0
   _randomness: 0
   _taskPrefab: {fileID: 0}
   _holder: {fileID: 0}
+  _progressBar: {fileID: 0}
 --- !u!212 &1873088350
 SpriteRenderer:
   m_ObjectHideFlags: 0
