@@ -52,19 +52,20 @@ public class Guest : DragObject
         _bodyImage.sprite = _bodySprite;
     }
 
-   private void OnCollisionEnter2D(Collision2D other) 
-   {
-      if(other.collider.tag == "Reception")
-      {
-         ActivateSpeech();
-      }
-   }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Reception")) 
+        {
+            _defaultPosition = collision.gameObject.transform.position;
+            ActivateSpeech();
+        }
+    }
 
-   private void OnCollisionExit2D(Collision2D other) 
-   {
-      if(other.collider.tag == "Reception")
-      {
-         DeativateSpeech();
-      }
-   }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Reception"))
+        {
+            DeativateSpeech();
+        }
+    }
 }

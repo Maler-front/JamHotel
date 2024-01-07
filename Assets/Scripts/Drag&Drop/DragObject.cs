@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragObject : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public bool NeedToRespawn
     {
@@ -15,7 +13,8 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
     private bool _needToRespawn = true;
-    [SerializeField] private Transform _defaultPosition;
+    protected bool _canBeDragged = true;
+    [SerializeField] protected Vector2 _defaultPosition;
 
     private void Awake() 
     {
@@ -27,23 +26,33 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
         {
             Debug.LogWarning("No Rigidbody2D Attached!");
         }
+
+        if(TryGetComponent<PointChasing>(out PointChasing pointChasingComponent))
+        {
+            pointChasingComponent.OnChangeChasingState += (state) => { _canBeDragged = !state; };
+        }
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        if (!_canBeDragged) return;
+
         _collider.enabled = false;
         _rigidbody.gravityScale = 0;
     }
 
     public virtual void OnDrag(PointerEventData eventData)
     {
+        if (!_canBeDragged) return;
+
         Vector3 newPosition = Camera.main.ScreenToWorldPoint(eventData.position);
         transform.position = new Vector3(newPosition.x,newPosition.y, 0);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End");
+        if (!_canBeDragged) return;
+
         if(_needToRespawn)
         {
             Respawn();
@@ -52,21 +61,17 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
         _rigidbody.gravityScale = 1;
     }
 
-    public virtual void OnPointerDown(PointerEventData eventData)
-    {
-        // Debug.Log("Down!");
-        
-    }
-
-    public void OnPointerUp(PointerEventData data)
-    {
-        // Debug.Log("Release!");
-    }
-
     public void Respawn()
     {
-        transform.position = _defaultPosition.position;
+        transform.position = _defaultPosition;
         _needToRespawn = true;
     }
 
+    private void OnDestroy()
+    {
+        if (TryGetComponent<PointChasing>(out PointChasing pointChasingComponent))
+        {
+            pointChasingComponent.OnChangeChasingState -= (state) => { _canBeDragged = !state; };
+        }
+    }
 }

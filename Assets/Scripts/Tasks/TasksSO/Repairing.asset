@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b529748c44218d4182ffe0c94ce07d9, type: 3}
   m_Name: Repairing
   m_EditorClassIdentifier: 
-  _id: 0
-  _duration: 0
-  _reward: 0
+  _id: 2
+  _duration: 10
+  _reward: -200
   _sprite: {fileID: 0}

@@ -6,7 +6,9 @@ public class GuestsSpawner : MonoBehaviour
 {
     [SerializeField] private float _tickRate;
     [SerializeField] private float _tickCapasity;
+    [SerializeField] private float _tickSpread;
     [SerializeField] private GameObject _guestPrefab;
+    [SerializeField] private GameObject _reception;
     private float _remainingTicks;
 
     private void Awake()
@@ -24,7 +26,7 @@ public class GuestsSpawner : MonoBehaviour
             if(_remainingTicks <= 0f)
             {
                 Spawn();
-                _remainingTicks = _tickCapasity;
+                _remainingTicks = Random.Range((_tickCapasity - _tickSpread) * 1000, (_tickCapasity + _tickSpread) * 1000) / 1000;
             }
             yield return null;
         }
@@ -33,8 +35,9 @@ public class GuestsSpawner : MonoBehaviour
     private void Spawn()
     {
         Dictionary<PeopleConstructor.BodyPart, Sprite> sprites = PeopleConstructor.Instance.GetRandomGuestSprites();
-        Instantiate(_guestPrefab)
-            .GetComponent<Guest>()
-            .SetBodyParts(sprites[PeopleConstructor.BodyPart.Head], sprites[PeopleConstructor.BodyPart.Body]);
+        GameObject newGuest = Instantiate(_guestPrefab, transform.position, Quaternion.identity, null);
+        
+        newGuest.GetComponent<Guest>().SetBodyParts(sprites[PeopleConstructor.BodyPart.Head], sprites[PeopleConstructor.BodyPart.Body]);
+        newGuest.GetComponent<PointChasing>().SetTarget(_reception.transform);
     }
 }
