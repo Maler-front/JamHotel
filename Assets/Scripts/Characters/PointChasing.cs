@@ -7,6 +7,7 @@ public class PointChasing : MonoBehaviour
     [SerializeField] private float _speed = 0.25f;
     [SerializeField] private float _minDistance = 0.5f;
     private Animator _animator;
+    private Guest _guest;
     public event Action<bool> OnChangeChasingState;
 
     private Coroutine _coroutine;
@@ -14,6 +15,7 @@ public class PointChasing : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _guest = GetComponent<Guest>();
     }
 
     public void SetTarget(Transform newTarget)
@@ -35,6 +37,11 @@ public class PointChasing : MonoBehaviour
         OnChangeChasingState?.Invoke(true);
         SetWalkingState(true);
 
+        if(_guest.DefaultPosition == null)
+        {
+            _guest.DefaultPosition = target;
+        }
+
         float currentDistance = Vector2.Distance(transform.position, target.position);
         while(currentDistance >= _minDistance)
         {
@@ -43,6 +50,7 @@ public class PointChasing : MonoBehaviour
             yield return null;
         }
 
+        StopChasing();
         SetWalkingState(false);
     }
 
