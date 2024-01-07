@@ -17,6 +17,8 @@ public class TaskSheet
 
     public Task GetRandomTask()
     {
+        if(_tasks.Count == 0) return null;
+
         int taskId = Random.Range(0, _tasks.Count);
         Task returningTask = _tasks[taskId];
         _tasks.RemoveAt(taskId);

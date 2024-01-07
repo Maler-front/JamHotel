@@ -7,6 +7,12 @@ using UnityEngine.EventSystems;
 public class Guest : DragObject
 {
    public TaskSheet TaskSheet => _taskSheet;
+   public float TimeBetweenTasks => _timeBetweenTasks;
+
+   [Header("Specs")]
+   [Space]
+   [SerializeField] private float _occupationTime;
+   private float _timeBetweenTasks;
 
    [Header("Tasks")]
    [Space]
@@ -20,7 +26,8 @@ public class Guest : DragObject
 
    private void Start() 
    {
-      _taskSheet = new TaskSheet(_tasksCount);  
+      _taskSheet = new TaskSheet(_tasksCount); 
+      _timeBetweenTasks = _occupationTime / _tasksCount;
    }
 
    private void ActivateSpeech()
