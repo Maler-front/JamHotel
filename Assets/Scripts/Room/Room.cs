@@ -53,6 +53,7 @@ public class Room : DropArea
                 // Debug.Log("Get Tasks");
                 (_guest as DragObject).NeedToRespawn = false;
                 GetNextTask();
+                Reception.Instance.RemoveElement(Reception.Instance.GetObjectId(_guest.GetComponent<PointChasing>()));
             }else
             {
                 Debug.Log("Room Is Empty");

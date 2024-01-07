@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Guest : DragObject
@@ -54,7 +50,7 @@ public class Guest : DragObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Reception")) 
+        if (collision.TryGetComponent<Reception>(out Reception reception)) 
         {
             _defaultPosition = collision.gameObject.transform.position;
             ActivateSpeech();
@@ -63,7 +59,7 @@ public class Guest : DragObject
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Reception"))
+        if (collision.TryGetComponent<Reception>(out Reception reception))
         {
             DeativateSpeech();
         }
