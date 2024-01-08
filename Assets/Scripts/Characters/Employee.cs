@@ -6,18 +6,23 @@ public class Employee : DragObject
 {
     public float Efficiency => _efficiency;
 
-    private enum EmployeeType
+    public enum EmployeeType
     {
-        Manager,
-        Cleaning,
-        Concierge,
-        Maintenance,
-        Cook
+        Cleaning = 0,
+        Cook = 1,
+        Maintenance = 2,
+        Manager = -1
     }
 
     [Header("Employee Type")]
     [Space]
     [SerializeField] private EmployeeType _type;
+
+    public EmployeeType Type
+    {
+        get { return _type;  }
+        set { }
+    }
     
     [Header("Stats")]
     [Space]

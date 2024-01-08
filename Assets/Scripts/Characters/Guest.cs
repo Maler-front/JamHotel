@@ -55,12 +55,28 @@ public class Guest : DragObject
         _bodyImage.sprite = _bodySprite;
     }
 
+    public void SetDefaultPosition(Transform newDefaultPosition)
+    {
+        _defaultPosition = newDefaultPosition;
+    }
+
+    public void HideImages()
+    {
+        _headImage.gameObject.SetActive(false);
+        _bodyImage.gameObject.SetActive(false);
+    }
+
+    public void ShowImages()
+    {
+        _headImage.gameObject.SetActive(true);
+        _bodyImage.gameObject.SetActive(true);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Reception>(out Reception reception)) 
         {
-            //_defaultPosition = collision.gameObject.transform.position;
             ActivateSpeech();
         }
     }
