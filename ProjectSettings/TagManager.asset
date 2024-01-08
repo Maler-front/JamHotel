@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Reception
   - Room
+  - Sound
   layers:
   - Default
   - TransparentFX
