@@ -118,6 +118,7 @@ public class Room : DropArea
         _progressBar.StartTimer(estimatedTime);
         yield return new WaitForSeconds(estimatedTime);
 
+        WalletModel.AddCoins((uint)_task.Reward);
         foreach(Transform child in _holder.transform)
         {
             Destroy(child.gameObject);
