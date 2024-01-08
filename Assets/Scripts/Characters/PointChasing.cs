@@ -21,6 +21,7 @@ public class PointChasing : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         SetWalkingState(false);
+        _guest.SetDefaultPosition(newTarget);
         StopChasing();
         _coroutine = StartCoroutine(Chase(newTarget));
     }

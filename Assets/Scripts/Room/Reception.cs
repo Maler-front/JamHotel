@@ -35,6 +35,7 @@ public class Reception : MonoBehaviour
         if(ObjectsNumber == 0) return;
 
         ObjectsNumber -= 1;
+        IsFull = false;
         _queuedObjects[id] = null;
         for(int i = id; i < ObjectsNumber; i++)
         {

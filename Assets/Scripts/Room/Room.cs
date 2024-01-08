@@ -29,7 +29,6 @@ public class Room : DropArea
     [SerializeField] private ProgressBar _progressBar;
 
 
-
     private void FixedUpdate() 
     {
         if(_currentTaskCooldown == -10) return;
@@ -70,17 +69,22 @@ public class Room : DropArea
                 _taskCooldown = _guest.TimeBetweenTasks;
                 GetNextTask();
                 Reception.Instance.RemoveElement(Reception.Instance.GetObjectId(_guest.GetComponent<PointChasing>()));
+                _guest.GetComponent<Rigidbody2D>().simulated = false;
+                _guest.HideImages();
             }else
             {
                 Debug.Log("Room Is Empty");
             }
         }else
         {
-            if(eventData.pointerDrag.TryGetComponent<Employee>(out _employee) && _currentTaskCooldown == -10)
+            if(eventData.pointerDrag.TryGetComponent<Employee>(out Employee employee) && _currentTaskCooldown == -10)
             {
-                // Debug.Log("Start Work");
-                (_employee as DragObject).NeedToRespawn = false;
-                StartCoroutine(FinishTaskCo());
+                if((int)employee.Type == _task.Id || employee.Type == Employee.EmployeeType.Manager)
+                {
+                    _employee = employee;
+                    (_employee as DragObject).NeedToRespawn = false;
+                    StartCoroutine(FinishTaskCo());
+                }
             }else
             {
                 Debug.Log("Room Is Occupied");
@@ -110,6 +114,7 @@ public class Room : DropArea
     private IEnumerator FinishTaskCo()
     {
         float estimatedTime = _task.Duration / _employee.Efficiency;
+        //_employee.enabled = false;
         _progressBar.StartTimer(estimatedTime);
         yield return new WaitForSeconds(estimatedTime);
 
@@ -118,6 +123,7 @@ public class Room : DropArea
             Destroy(child.gameObject);
         }
 
+        //_employee.enabled = true;
         (_employee as DragObject).Respawn();
         _employee = null;
         GetNextTask();

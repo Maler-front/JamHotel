@@ -24,24 +24,22 @@ public class GuestsSpawner : MonoBehaviour
             
             if(_remainingTicks <= 0f)
             {
-                yield return Spawn();
+                Spawn();
                 _remainingTicks = Random.Range((_tickCapasity - _tickSpread) * 1000, (_tickCapasity + _tickSpread) * 1000) / 1000;
             }
             yield return null;
         }
     }
 
-    private IEnumerator Spawn()
+    private void Spawn()
     {
         Dictionary<PeopleConstructor.BodyPart, Sprite> sprites = PeopleConstructor.Instance.GetRandomGuestSprites();
 
-        while (Reception.Instance.IsFull)
+        if (!Reception.Instance.IsFull)
         {
-            yield return null;
+            GameObject newGuest = Instantiate(_guestPrefab, transform.position, Quaternion.identity, null);
+            newGuest.GetComponent<Guest>().SetBodyParts(sprites[PeopleConstructor.BodyPart.Head], sprites[PeopleConstructor.BodyPart.Body]);
+            Reception.Instance.AddElement(newGuest.GetComponent<PointChasing>());
         }
-        
-        GameObject newGuest = Instantiate(_guestPrefab, transform.position, Quaternion.identity, null);
-        newGuest.GetComponent<Guest>().SetBodyParts(sprites[PeopleConstructor.BodyPart.Head], sprites[PeopleConstructor.BodyPart.Body]);
-        Reception.Instance.AddElement(newGuest.GetComponent<PointChasing>());
     }
 }
