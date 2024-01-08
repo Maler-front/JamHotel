@@ -8,23 +8,25 @@ public class Room : DropArea
 {
     [Header("Info")]
     [Space]
-    [SerializeField] private int _cost;
+    [SerializeField] private uint _cost;
     [SerializeField] private Employee _employee;
     [SerializeField] private Guest _guest;
+    [SerializeField] private float _incomeCooldown;
+    private float _currentIncomeCooldown;
 
     [Header("Task Specs")]
     [Space]
     [SerializeField] private Task _task;
-    [SerializeField] private float _taskCooldown;
     [Range(1, 5)]
     [SerializeField] private float _randomness;
     private float _currentTaskCooldown = -10;
+    private float _taskCooldown;
 
     [Header("UI")]
     [Space]
     [SerializeField] private TaskUI _taskPrefab;
     [SerializeField] private GameObject _holder;
-
+    [SerializeField] private ProgressBar _progressBar;
 
 
     private void FixedUpdate() 
@@ -34,11 +36,23 @@ public class Room : DropArea
         if(_currentTaskCooldown > 0)
         {
             _currentTaskCooldown -= Time.fixedDeltaTime;
+
+            Income();
+
         }else
         {
             // Debug.Log("Task");
             _currentTaskCooldown = -10;
             StartTask();
+        }
+    }
+
+    private void Income()
+    {
+        if((_currentIncomeCooldown += Time.fixedDeltaTime) >= _incomeCooldown)
+        {
+            _currentIncomeCooldown = 0;
+            WalletModel.AddCoins(_cost);
         }
     }
 
@@ -52,18 +66,25 @@ public class Room : DropArea
             {
                 // Debug.Log("Get Tasks");
                 (_guest as DragObject).NeedToRespawn = false;
+                _taskCooldown = _guest.TimeBetweenTasks;
                 GetNextTask();
+                Reception.Instance.RemoveElement(Reception.Instance.GetObjectId(_guest.GetComponent<PointChasing>()));
+                _guest.GetComponent<Rigidbody2D>().simulated = false;
+                _guest.HideImages();
             }else
             {
                 Debug.Log("Room Is Empty");
             }
         }else
         {
-            if(eventData.pointerDrag.TryGetComponent<Employee>(out _employee) && _currentTaskCooldown == -10)
+            if(eventData.pointerDrag.TryGetComponent<Employee>(out Employee employee) && _currentTaskCooldown == -10)
             {
-                // Debug.Log("Start Work");
-                (_employee as DragObject).NeedToRespawn = false;
-                StartCoroutine(FinishTaskCo());
+                if((int)employee.Type == _task.Id || employee.Type == Employee.EmployeeType.Manager)
+                {
+                    _employee = employee;
+                    (_employee as DragObject).NeedToRespawn = false;
+                    StartCoroutine(FinishTaskCo());
+                }
             }else
             {
                 Debug.Log("Room Is Occupied");
@@ -74,6 +95,14 @@ public class Room : DropArea
     private void GetNextTask()
     {
         _task = _guest.TaskSheet.GetRandomTask();
+
+        if(_task == null)
+        {
+            _guest.Respawn();
+            _guest = null;
+            return;
+        }
+
         _currentTaskCooldown = Random.Range(_taskCooldown - _randomness, _taskCooldown + _randomness); 
     }
 
@@ -84,13 +113,18 @@ public class Room : DropArea
 
     private IEnumerator FinishTaskCo()
     {
-        yield return new WaitForSeconds(_task.Duration / _employee.Efficiency);
+        float estimatedTime = _task.Duration / _employee.Efficiency;
+        //_employee.enabled = false;
+        _progressBar.StartTimer(estimatedTime);
+        yield return new WaitForSeconds(estimatedTime);
 
+        WalletModel.AddCoins((uint)_task.Reward);
         foreach(Transform child in _holder.transform)
         {
             Destroy(child.gameObject);
         }
 
+        //_employee.enabled = true;
         (_employee as DragObject).Respawn();
         _employee = null;
         GetNextTask();
