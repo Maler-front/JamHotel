@@ -13,29 +13,21 @@ public class SettingAudio : MonoBehaviour
 
     [SerializeField] private TMP_Text _levelSoundText;
 
-    [SerializeField] private AudioSource _audioSource;
-
 
     private void Start()
     {
-        if (_audioSource != null)
-        {
-            UpdateTextWithValue(_sliderAudio.value);
-            _sliderAudio.onValueChanged.AddListener(UpdateTextWithValue);
-        }
+        UpdateTextWithValue(_sliderAudio.value);
+        _sliderAudio.onValueChanged.AddListener(UpdateTextWithValue);
     }
 
     private void Update()
     {
-        if (_audioSource != null)
-        {
-            _audioSource.volume = _sliderAudio.value;
-        }
+        AudioListener.volume = _sliderAudio.value;
     }
 
     public void OnOffAudio()
     {
-        if (AudioListener.volume == 1)
+        if (AudioListener.volume != 0)
         {
             AudioListener.volume = 0;
             _buttonAudio.GetComponent<Image>().sprite = _audioOff;
@@ -45,7 +37,6 @@ public class SettingAudio : MonoBehaviour
             AudioListener.volume = 1;
             _buttonAudio.GetComponent<Image>().sprite = _audioOn;
         }
-        PlayerPrefs.SetFloat("volume", AudioListener.volume);
     }
 
     void UpdateTextWithValue(float value)

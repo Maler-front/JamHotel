@@ -23,6 +23,8 @@ public class LoadingManager : MonoBehaviour
         {
             _animator = GetComponent<Animator>();
         }
+
+        Time.timeScale = 1f;
     }
 
     private void Start()
